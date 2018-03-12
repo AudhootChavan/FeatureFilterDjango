@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Table Filter </title>
+    <!-- custom css -->
+    <link href="{% static 'css/mystyles.css' %}" rel="stylesheet">
+    <!-- Boostrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  </head>
+  <body>
+
+
+    <!-- Filter form  -->
+
+    <form class=""  method="post">
+      {% csrf_token %}
+
+      <div class="container">
+
+        <br><br>
+        <h5> Filters : </h5> <br>
+        <div class="row" >
+
+          <div class="col-lg-2">
+            <p> File Type: &nbsp {{form.type_filter}} &nbsp &nbsp </p>
+          </div>
+          <div class="col-lg-3 ">
+            <p>   Objective: &nbsp  {{form.objective_filter}} &nbsp &nbsp </p>
+          </div>
+          <div class="col-lg-3">
+            <p> Sentiment: &nbsp {{form.sentiment_filter}} &nbsp &nbsp </p>
+          </div>
+          <div class="col-lg-2">
+            <p> Segment: &nbsp {{form.segment_filter}} &nbsp &nbsp &nbsp &nbsp</p>
+          </div>
+          <div class="col-lg-2">
+            <input type="submit" class="btn btn-success btn-sm" value="Apply"> <br><br><br>
+          </div>
+
+        </div>
+      </div>
+    </form>
+
+
+
+<!-- File Display  -->
+
+
+{% if datatable %}
+<div class="container" id = "data" >
+
+{% for data in datatable %}
+{% ifequal forloop.counter 1 %}<div class="row"> {% endifequal %}
+      <div class="col-md-6 col-lg-3">
+        <p > <b> File name : {{ data.0 }} </b> </p>
+        {% with ''|add:data.1 as image_static %}
+        <img src="{% static image_static %}"> <br><br>
+        <p style=" color : grey; font-family: 'Lato', sans-serif;">
+          File type : {{ data.2 }} <br>
+          Brand Objective : {{ data.3 }}<br>
+          Brand Sentiment : {{ data.4 }}<br>
+          Segment : {{ data.5 }}<br>
+        </p>
+        <br><br><br>
+        {% endwith %}
+        </div>
+      {% endfor %}
+       </div>
+    </div>
+{% endif %}
+
+
+
+  </body>
+</html>
